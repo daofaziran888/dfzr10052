@@ -1,0 +1,16 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8009:8009"
+    environment:
+      - APP_ENV=local
+  frontend:
+    build: ./frontend
+    ports:
+      - "5182:5182"
+    environment:
+      # 前端容器里的 127.0.0.1 是它自己，必须走 Compose 服务名访问后端。
+      VITE_PROXY_TARGET: http://backend:8009
+    depends_on:
+      - backend
